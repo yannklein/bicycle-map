@@ -4,9 +4,8 @@ mapboxgl.accessToken = 'pk.eyJ1IjoieWFubmx1Y2tsZWluIiwiYSI6ImNqcnZmeHQwaDAxb2o0N
 
 new mapboxgl.Map({
     container: 'map',
-    style: 'mapbox://styles/mapbox/streets-v9',
-    projection: 'globe', // Display the map as a globe, since satellite-v9 defaults to Mercator
-    zoom: 1,
-    center: [30, 15]
+    style: 'mapbox://styles/yannlucklein/cly83l5kh00jc01pr8yx7a3ye',
+    zoom: 5,
+    center: [138.2529, 36.2048]
 });
 
