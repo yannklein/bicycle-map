@@ -9,8 +9,8 @@ mapboxgl.accessToken =
 const map = new mapboxgl.Map({
   container: 'map',
   style: 'mapbox://styles/yannlucklein/cly83l5kh00jc01pr8yx7a3ye',
-  zoom: 5,
-  center: [138.2529, 36.2048],
+  zoom: 5.5,
+  center: [135.50218, 34.69374],
 });
 
 map.on('load', () => {
