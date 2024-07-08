@@ -24,9 +24,13 @@ map.on('load', () => {
     map.addLayer({
       id: `bicycle-trip-layer-${i}`,
       type: 'line',
+      layout: {
+        'line-cap': 'round',
+        'line-join': 'round',
+      },
       source: `bicycle-trip-${i}`,
       paint: {
-        'line-width': 4,
+        'line-width': 8,
         'line-gradient': [
           'interpolate',
           ['linear'],
@@ -66,7 +70,7 @@ map.on('load', () => {
       // Populate the popup and set its coordinates
       // based on the feature found.
       const midCoord = coordinates[Math.round(coordinates.length / 2)];
-      const [title, info] = description.split(" | ");
+      const [title, info] = description.split(' | ');
       const popupElement = `
         <div class="popup">
           <i class="icon fa-solid fa-person-biking"></i>
