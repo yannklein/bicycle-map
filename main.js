@@ -1,5 +1,7 @@
 import mapboxgl from 'mapboxgl';
 
+const randomColorGen = () => "#" + Math.floor(Math.random() * 0xFFFFFF).toString(16);
+ 
 mapboxgl.accessToken =
   'pk.eyJ1IjoieWFubmx1Y2tsZWluIiwiYSI6ImNqcnZmeHQwaDAxb2o0NGx2bG1tOWgwNGIifQ.q4zhKOCoH7nDIJNm88leXg';
 
@@ -12,18 +14,18 @@ const map = new mapboxgl.Map({
 
 map.on('load', () => {
   for (let i = 0; i < 10; i += 1) {
-    map.addSource(`bicycle-trips-${i}`, {
+    map.addSource(`bicycle-trip-${i}`, {
       type: 'geojson',
-      data: `./bicycle-trips/geojson-${i}.geojson`,
+      data: `./bicycle-trips/bicycle-trip-${i}.geojson`,
     });
 
     map.addLayer({
-      id: `bicycle-trips-layer-${i}`,
+      id: `bicycle-trip-layer-${i}`,
       type: 'line',
-      source: `bicycle-trips-${i}`,
+      source: `bicycle-trip-${i}`,
       paint: {
         'line-width': 3,
-        'line-color': 'red',
+        'line-color': randomColorGen(),
       },
     });
   }
