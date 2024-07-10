@@ -61,3 +61,16 @@ h1 {
   align-items: center;
   font-size: 24px;
 }
+
+
+.marker {
+  height: 32px;
+  width: 32px;
+  background: linear-gradient(#7b4397, #dc2430);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  border-radius: 50%;
+  border: 2px solid black;
+}

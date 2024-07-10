@@ -1,5 +1,7 @@
 import mapboxgl from 'mapboxgl';
 
+import getInstaHighlights from './getInstaHighlights.js';
+
 const randomColorGen = () =>
   '#' + Math.floor(Math.random() * 0xffffff).toString(16);
 
@@ -13,11 +15,12 @@ const map = new mapboxgl.Map({
   center: [135.50218, 34.69374],
 });
 
-map.on('load', () => {
+map.on('load', async () => {
   for (let i = 0; i < 10; i += 1) {
+    const geojsonPath = `./bicycle-trips/bicycle-trip-${i}.geojson`;
     map.addSource(`bicycle-trip-${i}`, {
       type: 'geojson',
-      data: `./bicycle-trips/bicycle-trip-${i}.geojson`,
+      data: geojsonPath,
       lineMetrics: true,
     });
 
@@ -43,49 +46,33 @@ map.on('load', () => {
       },
     });
 
-    // Create a popup, but don't add it to the map yet.
+    const response = await fetch(geojsonPath);
+    const data = await response.json();
+    const coords = data.features
+      .map((feature) => feature.geometry.coordinates)
+      .flat();
+    const markerContent = document.createElement("div");
+    markerContent.innerHTML = `
+          <span class="marker"><i class="icon fa-solid fa-person-biking"></i></span>
+        `;
+    // console.log(data);
+    const [title, info] = data.name.split(' | ');
+    const popupElement = `
+          <div class="popup">
+            <i class="icon fa-solid fa-person-biking"></i>
+            <h4>${title}</h4>
+            <p>${info}</p>
+          </div>
+        `;
     const popup = new mapboxgl.Popup({
       closeButton: false,
-      closeOnClick: false,
-    });
+    }).setHTML(popupElement);
 
-    map.on('mouseenter', `bicycle-trip-layer-${i}`, (e) => {
-      // Change the cursor style as a UI indicator.
-      map.getCanvas().style.cursor = 'pointer';
+    const marker = new mapboxgl.Marker(markerContent)
+      .setLngLat(coords[Math.floor(coords.length / 2)])
+      .setPopup(popup)
+      .addTo(map);
 
-      // Copy coordinates array.
-      const coordinates = e.features[0].geometry.coordinates.slice();
-      const description = e.features[0].properties.Name;
-      console.log(description);
-
-      // Ensure that if the map is zoomed out such that multiple
-      // copies of the feature are visible, the popup appears
-      // over the copy being pointed to.
-      if (['mercator', 'equirectangular'].includes(map.getProjection().name)) {
-        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-          coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-        }
-      }
-
-      // Populate the popup and set its coordinates
-      // based on the feature found.
-      const midCoord = coordinates[Math.round(coordinates.length / 2)];
-      const [title, info] = description.split(' | ');
-      const popupElement = `
-        <div class="popup">
-          <i class="icon fa-solid fa-person-biking"></i>
-          <h4>${title}</h4>
-          <p>${info}</p>
-        </div>
-      `;
-      popup.setLngLat(midCoord).setHTML(popupElement).addTo(map);
-    });
-
-    map.on('mouseleave', `bicycle-trip-layer-${i}`, () => {
-      setTimeout(() => {
-        map.getCanvas().style.cursor = '';
-        popup.remove();
-      }, 1000);
-    });
+    // await getInstaHighlights();
   }
 });
