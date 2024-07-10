@@ -73,7 +73,7 @@ map.on('load', async () => {
               </div>
             </div>
             <div>
-              ${instaLinks.reduce((acc, link) => `${acc}<a class="insta-link" href=${link}><i class="fa-brands fa-square-instagram"></i></a>`, "")}
+              ${instaLinks.reduce((acc, link) => `${acc}<a target="_blank" class="insta-link" href=${link}><i class="fa-brands fa-square-instagram"></i></a>`, "")}
             </div>
           </div>
         `;
