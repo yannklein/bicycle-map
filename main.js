@@ -1,6 +1,9 @@
 import mapboxgl from 'mapboxgl';
 
 import getInstaHighlights from './getInstaHighlights.js';
+import Queue from './queue.js';
+
+const queue = new Queue();
 
 const randomColorGen = () =>
   '#' + Math.floor(Math.random() * 0xffffff).toString(16);
@@ -51,17 +54,27 @@ map.on('load', async () => {
     const coords = data.features
       .map((feature) => feature.geometry.coordinates)
       .flat();
-    const markerContent = document.createElement("div");
+    const markerContent = document.createElement('div');
     markerContent.innerHTML = `
           <span class="marker"><i class="icon fa-solid fa-person-biking"></i></span>
         `;
     // console.log(data);
     const [title, info] = data.name.split(' | ');
+    const instaLinks = data?.instaLinks || [];
+    const [days, distance] = info.split(', ');
     const popupElement = `
           <div class="popup">
             <i class="icon fa-solid fa-person-biking"></i>
-            <h4>${title}</h4>
-            <p>${info}</p>
+            <div>
+              <h4>${title}</h4>
+              <div class="info" >
+                <span><i class="fa-regular fa-clock"></i> ${days}</span>
+                <span><i class="fa-solid fa-route"></i> ${distance}</span>
+              </div>
+            </div>
+            <div>
+              ${instaLinks.reduce((acc, link) => `${acc}<a class="insta-link" href=${link}><i class="fa-brands fa-square-instagram"></i></a>`, "")}
+            </div>
           </div>
         `;
     const popup = new mapboxgl.Popup({
@@ -73,6 +86,10 @@ map.on('load', async () => {
       .setPopup(popup)
       .addTo(map);
 
-    // await getInstaHighlights();
+    // queue.addToQueue(async () => {
+    //   const response = await getInstaHighlights('17942328881693253');
+    //   const instaData = await response.json();
+    //   console.log(instaData);
+    // })
   }
 });
