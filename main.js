@@ -25,12 +25,15 @@ const initMap = () => {
     while (true) {
       try {
         const response = await fetch(`./bicycle-trips/bicycle-trip-${routeIndex}.geojson`);
+        if (response.status === 404) {
+          throw new Error(`End of routes: route ${routeIndex} not found, loaded ${routeIndex - 1}`);
+        }
         const data = await response.json();
         addBicycleRoute(map, data, routeIndex);
         routeIndex += 1;
       } catch (error) {
-        if (error instanceof SyntaxError) {
-          
+        if (error.message.includes('End of routes')) {
+          console.warn(error.message);
         } else {
           console.error(error);
         }
@@ -77,10 +80,8 @@ const addBicycleRoute = (map, data, routeIndex) => {
   markerContent.innerHTML = `
         <span class="marker"><i class="icon fa-solid fa-person-biking"></i></span>
       `;
-  // console.log(data);
   const [title, info] = data.name.split(' | ');
   const instaLinks = data?.instaLinks || [];
-  console.log(routeIndex, info);
   const [days, distance] = info.split(', ');
 
   const popupElement = `
