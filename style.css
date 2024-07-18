@@ -70,6 +70,10 @@ h1 {
   font-size: 32px;
 }
 
+.popup .icon.pending {
+  background: linear-gradient(#777777, #d0d0d0);
+}
+
 .popup .info {
   display: flex;
   gap: 8px;
@@ -99,4 +103,8 @@ h1 {
   font-size: 16px;
   border-radius: 50%;
   border: 2px solid black;
+}
+
+.marker.pending {
+  background: linear-gradient(#777777, #d0d0d0);
 }
