@@ -15,8 +15,8 @@ const initMap = () => {
   const map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/yannlucklein/cly83l5kh00jc01pr8yx7a3ye',
-    zoom: 5.5,
-    center: [135.50218, 34.69374],
+    zoom: 4.9,
+    center: [137.85,38.4],
   });
 
   map.on('load', async () => {
