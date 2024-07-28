@@ -3,24 +3,15 @@ import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
 
 export default class ElevationChart {
-  constructor() {
-    return this.initChart();
-  }
-  initChart() {
-    const elevationCanvas = document.querySelector('#bicycle-trip-elevation');
-    console.log(elevationCanvas.width);
-    const gradient = elevationCanvas
-      .getContext('2d')
-      .createLinearGradient(0, 0, elevationCanvas.width * 3, 0);
-    gradient.addColorStop(0, '#7b4397');
-    gradient.addColorStop(1, '#dc2430');
-  
-    var data = {
+  constructor(gradientColors) {
+    this.canvas = document.querySelector('#bicycle-trip-elevation');
+    this.gradientColors = gradientColors;
+    this.baseData = {
       labels: [...Array(7).keys()],
       datasets: [
         {
           label: 'Altitude',
-          backgroundColor: gradient,
+          backgroundColor: this.generateGradient(),
           borderColor: 'black',
           borderWidth: 2,
           hoverBackgroundColor: 'rgba(255,99,132,0.4)',
@@ -31,11 +22,15 @@ export default class ElevationChart {
         },
       ],
     };
+    this.id = 'bicycle-trip-elevation';
+    this.chart = this.initChart();
+  }
+
+  initChart() {
     const fontSize = window.innerWidth <= 1000 ? 16 : 32;
-  
     const config = {
       type: 'line',
-      data: data,
+      data: this.baseData,
       options: {
         responsive: true,
         plugins: {
@@ -47,7 +42,7 @@ export default class ElevationChart {
           x: {
             title: {
               display: true,
-              text: "Distance (km)",
+              text: 'Distance (km)',
               align: 'end',
               font: {
                 size: fontSize,
@@ -62,7 +57,7 @@ export default class ElevationChart {
           y: {
             title: {
               display: true,
-              text: "Altitude (m)",
+              text: 'Altitude (m)',
               align: 'end',
               font: {
                 size: fontSize,
@@ -78,6 +73,23 @@ export default class ElevationChart {
         },
       },
     };
-    return new Chart('bicycle-trip-elevation', config);
-  };
+    return new Chart(this.id, config);
+  }
+
+  generateGradient() {
+    const gradient = this.canvas
+      .getContext('2d')
+      .createLinearGradient(0, 0, this.canvas.width * 3, 0);
+    gradient.addColorStop(0, this.gradientColors[0]);
+    gradient.addColorStop(1, this.gradientColors[1]);
+    return gradient;
+  }
+
+  updateData(elevations, distances) {
+    this.chart.data.labels = distances.map((dist) =>
+      dist.toFixed(distances.at(-1) > 100 ? 0 : 1),
+    );
+    this.chart.data.datasets[0].data = elevations;
+    this.chart.update();
+  }
 }

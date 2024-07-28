@@ -142,7 +142,6 @@ const addBicycleRoute = (map, data, routeIndex) => {
     .setPopup(popup)
     .addTo(map);
 
-  const elevationCanvas = document.querySelector('#bicycle-trip-elevation');
   const elevations = [];
   const distances = [];
   coords.forEach((coord, index) => {
@@ -159,21 +158,14 @@ const addBicycleRoute = (map, data, routeIndex) => {
   });
 
   popup.on('open', () => {
-    console.log(elevations);
-    console.log(chart.data);
-    chart.data.labels = distances.map((dist) =>
-      dist.toFixed(distances.at(-1) > 100 ? 0 : 1),
-    );
-    console.log(chart.data.labels.length, elevations.length);
-    chart.data.datasets[0].data = elevations;
-    chart.update();
-    elevationCanvas.classList.add('active');
+    chart.updateData(elevations, distances);    
+    chart.canvas.classList.add('active');
   });
 
   popup.on('close', () => {
-    elevationCanvas.classList.remove('active');
+    chart.canvas.classList.remove('active');
   });
 };
 
-const chart = new ElevationChart();
+const chart = new ElevationChart(['#7b4397', '#dc2430']);
 initMap();
