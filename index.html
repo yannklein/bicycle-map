@@ -14,7 +14,9 @@
     <script type="importmap">
       {
         "imports": {
-          "mapboxgl": "https://cdn.jsdelivr.net/npm/mapbox-gl@3.5.0/+esm"
+          "mapboxgl": "https://cdn.jsdelivr.net/npm/mapbox-gl@3.5.0/+esm",
+          "chart.js": "https://cdn.jsdelivr.net/npm/chart.js@4.4.3/+esm",
+          "@turf/turf": "https://cdn.jsdelivr.net/npm/@turf/turf@7.0.0/+esm"
         }
       }
     </script>
@@ -23,6 +25,7 @@
     <h1>Yann's bicycle map <i class="icon fa-solid fa-person-biking"></i></h1>
     <div id="map"></div>
     <p class="instructions">Click or tap the routes to know more <i class="fa-solid fa-map-location-dot"></i></p>
+    <canvas id="bicycle-trip-elevation" class="elevation"></canvas>
     <script type="module" src="main.js"></script>
   </body>
 </html>
