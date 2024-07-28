@@ -6,7 +6,7 @@ export default class BicycleMap {
   constructor(accessToken) {
     this.accessToken = accessToken;
     this.gradientColors = ['#7b4397', '#dc2430'];
-    this.mapStyle = 'mapbox://styles/yannlucklein/cly83l5kh00jc01pr8yx7a3ye';
+    this.mapStyle = 'mapbox://styles/mapbox/outdoors-v12';
     this.chart = new ElevationChart(this.gradientColors);
     this.initMap();
     this.addLayers();
