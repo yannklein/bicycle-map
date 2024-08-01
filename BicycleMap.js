@@ -18,7 +18,7 @@ export default class BicycleMap {
     this.map = new mapboxgl.Map({
       container: 'map',
       style: this.mapStyle,
-      zoom: 4,
+      zoom: 5,
       center: [137.85, 38.4],
       // pitch: 40,
     });
