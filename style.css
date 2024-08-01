@@ -129,7 +129,6 @@ h1 {
   background: linear-gradient(#777777, #d0d0d0);
 }
 
-
 @media (max-width: 500px) {
   .elevation {
     bottom: 16px;
